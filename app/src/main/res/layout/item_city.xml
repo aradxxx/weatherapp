@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:foreground="?selectableItemBackground">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cityName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@id/savedIcon"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tool:text="Moscow" />
+
+    <ImageView
+        android:id="@+id/savedIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_check" />
+</RelativeLayout>
