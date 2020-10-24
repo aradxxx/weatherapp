@@ -1,7 +1,6 @@
 package com.a65apps.weather.di.locationsearch
 
 import androidx.lifecycle.ViewModel
-import com.a65apps.weather.data.core.Prefs
 import com.a65apps.weather.data.location.LocationRepository
 import com.a65apps.weather.di.core.FragmentModule
 import com.a65apps.weather.di.core.keys.ViewModelKey
@@ -23,9 +22,8 @@ import dagger.multibindings.IntoMap
 class LocationSearchFragmentModule : FragmentModule<LocationSearchFragment, LocationSearchState>() {
     @Provides
     fun provideLocationSearchInteractor(
-        locationRepository: LocationRepository,
-        prefs: Prefs
-    ): LocationInteractor = LocationInteractorImpl(locationRepository, prefs)
+        locationRepository: LocationRepository
+    ): LocationInteractor = LocationInteractorImpl(locationRepository)
 
     @Module
     interface ViewModelModule {

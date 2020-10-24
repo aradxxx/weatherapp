@@ -5,36 +5,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/locationNameContainer"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/locationName"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/location_add_hint"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:navigationIcon="@drawable/ic_back"
+            app:title="@string/locations_search" />
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progressBarLine"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_below="@id/locationNameContainer"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_showProgressBackground="false" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locationNameContainer"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/locationName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/location_add_hint"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/progressBarLine"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="-3dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:mpb_progressStyle="horizontal"
+                app:mpb_showProgressBackground="false" />
+        </FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationsRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/locationNameContainer"
+        android:layout_below="@id/appBar"
         android:overScrollMode="never"
         tools:itemCount="100" />
 </RelativeLayout>

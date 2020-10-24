@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.a65apps.weather.di.core.AndroidXInjection
 import com.a65apps.weather.di.core.ViewModelFactory
 import com.a65apps.weather.presentation.util.Const
+import com.a65apps.weather.presentation.util.toast
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -45,8 +46,12 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
         // for implementing
     }
 
-    protected open fun onEvent(event: Any?) {
-        // for implementing
+    protected open fun onEvent(event: Event) {
+        when (event) {
+            is MessageEvent -> {
+                requireContext().toast(event.message)
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

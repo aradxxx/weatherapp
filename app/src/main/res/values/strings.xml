@@ -3,5 +3,11 @@
     <string name="settings">Настройки</string>
 
     <string name="locations">Местоположения</string>
+    <string name="locations_search">Поиск местоположения</string>
     <string name="location_add_hint">Добавьте местоположение</string>
+    <string name="realtime_weather">Погода сейчас</string>
+    <string name="no_location_comment">Нет выбранных местоположений</string>
+    <string name="navigate_search_locations">Перейти к поиску</string>
+    <string name="temperature_celsius">%.1f\u2103</string>
+    <string name="no_data">н/д</string>
 </resources>

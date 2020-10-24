@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface LocationInteractor {
     suspend fun filter(name: String)
     suspend fun searchLocation(name: String)
-    fun subsribeLocations(): Flow<List<Location>>
+    fun subscribeLocations(): Flow<List<Location>>
+    fun subscribeSavedLocations(): Flow<List<Location>>
     suspend fun locationSelected(location: Location)
-    suspend fun getDefault(): Location?
-    fun setDefault(location: Location?)
 }

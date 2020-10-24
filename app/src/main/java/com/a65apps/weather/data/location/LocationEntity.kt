@@ -10,5 +10,5 @@ data class LocationEntity(
     val name: String,
     val lat: Double,
     val lon: Double,
-    val saved: Boolean = false
+    val savedTimestamp: Long? = null
 )

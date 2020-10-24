@@ -1,7 +1,9 @@
 package com.a65apps.weather.presentation.util
 
+import android.content.Context
 import android.os.Parcelable
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -25,3 +27,6 @@ fun <F : Fragment> F.withInitialArguments(params: Parcelable) = apply {
 
 fun <T : ViewBinding> Fragment.viewBinding(viewBindingFactory: (View) -> T) =
     FragmentViewBindingDelegate(this, viewBindingFactory)
+
+fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT): Toast =
+    Toast.makeText(this, message, duration).apply { show() }

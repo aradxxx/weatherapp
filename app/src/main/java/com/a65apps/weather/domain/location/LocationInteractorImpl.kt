@@ -1,6 +1,5 @@
 package com.a65apps.weather.domain.location
 
-import com.a65apps.weather.data.core.Prefs
 import com.a65apps.weather.data.location.LocationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +11,6 @@ import javax.inject.Inject
 
 class LocationInteractorImpl @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val prefs: Prefs
 ) : LocationInteractor {
     private val filter = MutableStateFlow("")
 
@@ -20,7 +18,7 @@ class LocationInteractorImpl @Inject constructor(
         filter.value = name
     }
 
-    override fun subsribeLocations(): Flow<List<Location>> {
+    override fun subscribeLocations(): Flow<List<Location>> {
         return filter.flatMapLatest { filterName ->
             locationRepository.subscribeLocations()
                 .map { locations ->
@@ -31,25 +29,17 @@ class LocationInteractorImpl @Inject constructor(
         }
     }
 
+    override fun subscribeSavedLocations(): Flow<List<Location>> {
+        return locationRepository.subscribeSavedLocations()
+    }
+
     override suspend fun locationSelected(location: Location) = withContext(Dispatchers.Default) {
-        val toggled = location.copy(saved = !location.saved)
-        locationRepository.updateLocation(toggled)
-        if (toggled.saved || toggled.id == getDefault()?.id) {
-            val nextDefaultLocation = if (toggled.saved) {
-                toggled
-            } else {
-                locationRepository.savedLocations().firstOrNull { it.id != location.id }
-            }
-            setDefault(nextDefaultLocation)
+        val modifiedLocation = if (location.savedTimestamp == null) {
+            location.copy(savedTimestamp = System.currentTimeMillis())
+        } else {
+            location.copy(savedTimestamp = null)
         }
-    }
-
-    override suspend fun getDefault(): Location? {
-        return locationRepository.savedLocations().firstOrNull { it.id == prefs.defaultLocationId }
-    }
-
-    override fun setDefault(location: Location?) {
-        prefs.defaultLocationId = location?.id
+        locationRepository.updateLocation(modifiedLocation)
     }
 
     override suspend fun searchLocation(name: String) = withContext(Dispatchers.Default) {

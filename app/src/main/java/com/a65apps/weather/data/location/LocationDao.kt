@@ -14,12 +14,12 @@ interface LocationDao {
     @Query("SELECT * FROM location ORDER BY name ASC")
     fun subscribeLocations(): Flow<List<LocationEntity>>
 
+    @Query("SELECT * FROM location WHERE savedTimestamp IS NOT NULL ORDER BY savedTimestamp DESC,  name ASC")
+    fun subscribeSavedLocations(): Flow<List<LocationEntity>>
+
     @Query("SELECT * FROM location WHERE location.id == :id")
     fun getLocation(id: Long): List<LocationEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrReplaceLocation(locationEntity: LocationEntity)
-
-    @Query("SELECT * FROM location WHERE location.saved ORDER BY name ASC")
-    fun getSavedLocations(): List<LocationEntity>
 }

@@ -9,16 +9,20 @@ import com.a65apps.weather.BuildConfig
 import com.a65apps.weather.data.location.LocationDao
 import com.a65apps.weather.data.location.LocationEntity
 import com.a65apps.weather.data.location.PREDEFINED_LOCATIONS
+import com.a65apps.weather.data.weather.RealtimeWeatherEntity
+import com.a65apps.weather.data.weather.WeatherDao
 import java.util.concurrent.Executors
 
 @Database(
     entities = [
-        LocationEntity::class
+        LocationEntity::class,
+        RealtimeWeatherEntity::class
     ],
     version = BuildConfig.DB_VERSION
 )
 abstract class AppDb : RoomDatabase() {
     abstract fun locationDao(): LocationDao
+    abstract fun weatherDao(): WeatherDao
 
     companion object {
         @Volatile

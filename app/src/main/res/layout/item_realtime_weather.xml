@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:foreground="?selectableItemBackground">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/locationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@id/weatherState"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="@style/Body"
+        tool:text="Moscow" />
+
+    <ImageView
+        android:id="@+id/weatherState"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/temperature" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/temperature"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:gravity="end"
+        android:singleLine="true"
+        android:textAppearance="@style/Body"
+        android:textSize="20sp"
+        tool:text="-80.6\u2103" />
+</RelativeLayout>

@@ -43,6 +43,9 @@ class LocationSearchFragment : BaseFragment<LocationSearchViewModel, LocationSea
         binding.locationName.doAfterTextChanged {
             filter.value = it.toString()
         }
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.backPressed()
+        }
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             filter.debounce(FILTER_DEBOUNCE)
                 .collect { viewModel.filterChanged(it) }

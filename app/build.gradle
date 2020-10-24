@@ -20,6 +20,8 @@ android {
         buildConfigField("String", "GEOCODING_QUERY_KEY", "\"key\"")
         buildConfigField("String", "GEOCODING_BASE_URL", "\"https://us1.locationiq.com/v1/\"")
 
+        buildConfigField("String", "CLIMACEL_QUERY_KEY", "\"apikey\"")
+        buildConfigField("String", "CLIMACEL_BASE_URL", "\"https://api.climacell.co/v3/\"")
         buildConfigField("String", "CLIMACEL_API_KEY", "\"jQcTT5GyIm0DmUIC522QB9f7VN4pQlFr\"")
     }
 
@@ -94,6 +96,7 @@ dependencies {
 
     def moshi = "1.9.3"
     implementation "com.squareup.moshi:moshi:$moshi"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi"
 
     implementation "com.jakewharton.timber:timber:4.7.1"

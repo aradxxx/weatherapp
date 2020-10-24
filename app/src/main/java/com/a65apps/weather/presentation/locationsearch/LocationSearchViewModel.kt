@@ -4,6 +4,7 @@ import com.a65apps.weather.domain.location.LocationInteractor
 import com.a65apps.weather.presentation.core.BaseViewModel
 import com.a65apps.weather.presentation.core.navigation.AppRouter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -13,12 +14,14 @@ class LocationSearchViewModel @Inject constructor(
     private val locationInteractor: LocationInteractor,
     router: AppRouter
 ) : BaseViewModel<LocationSearchState>(LocationSearchState(emptyList(), false), router) {
+    private var searchJob: Job? = null
+
     init {
         subscribeLocations()
     }
 
     private fun subscribeLocations() = vmScope.launch {
-        locationInteractor.subsribeLocations()
+        locationInteractor.subscribeLocations()
             .flowOn(Dispatchers.IO)
             .collect { locations ->
                 updateState {
@@ -37,7 +40,14 @@ class LocationSearchViewModel @Inject constructor(
         updateFilter(filter)
     }
 
-    private fun search(filter: String) = vmScope.launch {
+    private fun search(filter: String) {
+        if (searchJob?.isActive == true) {
+            searchJob?.cancel()
+        }
+        searchJob = startSearchJob(filter)
+    }
+
+    private fun startSearchJob(filter: String) = vmScope.launch {
         updateState {
             it.copy(progressVisible = true)
         }

@@ -19,7 +19,7 @@ fun locationAdapterDelegate(clickListener: (Int) -> Unit) =
         }
         bind {
             locationName.text = item.name
-            savedIcon.isInvisible = !item.saved
+            savedIcon.isInvisible = item.savedTimestamp == null
         }
     }
 

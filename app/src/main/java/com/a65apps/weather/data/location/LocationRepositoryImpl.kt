@@ -20,10 +20,10 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
     override suspend fun updateLocations(name: String) = withContext(Dispatchers.IO) {
         val response = locationApi.search(name).execute()
-        val locations = if (!response.isSuccessful) {
-            throw IOException(response.message())
-        } else {
+        val locations = if (response.isSuccessful) {
             response.body()
+        } else {
+            throw IOException(response.message())
         } ?: emptyList()
         val locationEntities = locationDtoMapper.map(locations)
         appDb.locationDao().insertLocations(locationEntities)
@@ -34,12 +34,14 @@ class LocationRepositoryImpl @Inject constructor(
         return appDb.locationDao().subscribeLocations().map { locationEntityMapper.map(it) }
     }
 
+    override fun subscribeSavedLocations(): Flow<List<Location>> {
+        return appDb.locationDao().subscribeSavedLocations().map {
+            locationEntityMapper.map(it)
+        }
+    }
+
     override suspend fun updateLocation(location: Location) = withContext(Dispatchers.IO) {
         val locationsEntity = locationMapper.map(location)
         appDb.locationDao().addOrReplaceLocation(locationsEntity)
-    }
-
-    override suspend fun savedLocations(): List<Location> {
-        return appDb.locationDao().getSavedLocations().map { locationEntityMapper.map(it) }
     }
 }

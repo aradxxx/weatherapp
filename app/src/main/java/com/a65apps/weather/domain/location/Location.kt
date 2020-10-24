@@ -9,5 +9,5 @@ data class Location(
     val id: Long,
     val name: String,
     val coordinates: LatLon,
-    val saved: Boolean
+    val savedTimestamp: Long?
 ) : Parcelable

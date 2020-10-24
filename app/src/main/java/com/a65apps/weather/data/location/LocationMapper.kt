@@ -6,7 +6,7 @@ import com.a65apps.weather.domain.location.Location
 
 object LocationEntityMapper : Mapper<LocationEntity, Location> {
     override fun map(from: LocationEntity): Location {
-        return Location(from.id, from.name, LatLon(from.lat, from.lon), from.saved)
+        return Location(from.id, from.name, LatLon(from.lat, from.lon), from.savedTimestamp)
     }
 }
 
@@ -23,7 +23,7 @@ object LocationMapper : Mapper<Location, LocationEntity> {
             from.name,
             from.coordinates.lat,
             from.coordinates.lon,
-            from.saved
+            from.savedTimestamp
         )
     }
 }

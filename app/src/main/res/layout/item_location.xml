@@ -15,6 +15,7 @@
         android:layout_toStartOf="@id/savedIcon"
         android:ellipsize="end"
         android:singleLine="true"
+        android:textAppearance="@style/Body"
         tool:text="Moscow" />
 
     <ImageView

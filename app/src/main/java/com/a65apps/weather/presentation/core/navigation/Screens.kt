@@ -3,6 +3,7 @@ package com.a65apps.weather.presentation.core.navigation
 import androidx.fragment.app.Fragment
 import com.a65apps.weather.presentation.core.navigation.tab.TabsContainerFragment
 import com.a65apps.weather.presentation.locationsearch.LocationSearchFragment
+import com.a65apps.weather.presentation.realtimeweather.RealtimeWeatherFragment
 import com.a65apps.weather.presentation.settings.SettingsFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -17,5 +18,9 @@ object Screens {
 
     object Settings : SupportAppScreen() {
         override fun getFragment(): Fragment = SettingsFragment.newInstance()
+    }
+
+    object RealtimeWeather : SupportAppScreen() {
+        override fun getFragment(): Fragment = RealtimeWeatherFragment.newInstance()
     }
 }

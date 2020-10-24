@@ -5,23 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/settings"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/settings" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/locations"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="start|center_vertical"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -29,7 +31,7 @@
         android:paddingEnd="16dp"
         android:text="@string/locations"
         android:textAllCaps="false"
-        android:textSize="14sp"
+        android:textAppearance="@style/Body"
         app:cornerRadius="0dp"
         app:rippleColor="@color/colorAccentRipple" />
 </LinearLayout>
