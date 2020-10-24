@@ -6,19 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.a65apps.weather.BuildConfig
-import com.a65apps.weather.data.city.CityDao
-import com.a65apps.weather.data.city.CityEntity
-import com.a65apps.weather.data.city.PREDEFINED_CITIES
+import com.a65apps.weather.data.location.LocationDao
+import com.a65apps.weather.data.location.LocationEntity
+import com.a65apps.weather.data.location.PREDEFINED_LOCATIONS
 import java.util.concurrent.Executors
 
 @Database(
     entities = [
-        CityEntity::class
+        LocationEntity::class
     ],
     version = BuildConfig.DB_VERSION
 )
 abstract class AppDb : RoomDatabase() {
-    abstract fun cityDao(): CityDao
+    abstract fun locationDao(): LocationDao
 
     companion object {
         @Volatile
@@ -40,7 +40,7 @@ abstract class AppDb : RoomDatabase() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     Executors.newSingleThreadExecutor().execute {
-                        getInstance(context).cityDao().insertCities(PREDEFINED_CITIES)
+                        getInstance(context).locationDao().insertLocations(PREDEFINED_LOCATIONS)
                     }
                 }
             }).build()

@@ -6,6 +6,7 @@
     <color name="colorAccentRipple">#42107FFF</color>
 
     <!--<color name="transparent">#00000000</color>-->
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
     <!--<color name="text_secondary_dark">#8A000000</color>-->

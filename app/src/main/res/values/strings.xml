@@ -1,6 +1,7 @@
 <resources>
     <string name="general">Главная</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Настройки</string>
 
-    <string name="city_hint">Добавьте местоположение</string>
+    <string name="locations">Местоположения</string>
+    <string name="location_add_hint">Добавьте местоположение</string>
 </resources>

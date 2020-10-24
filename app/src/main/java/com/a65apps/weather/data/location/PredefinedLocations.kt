@@ -1,8 +1,8 @@
-package com.a65apps.weather.data.city
+package com.a65apps.weather.data.location
 
-val PREDEFINED_CITIES = listOf(
+val PREDEFINED_LOCATIONS = listOf(
     // Moscow
-    CityEntity(
+    LocationEntity(
         id = 2555133,
         name = "Москва, Центральный административный округ, Центральный федеральный округ, Россия",
         lat = 55.7504461,
@@ -10,7 +10,7 @@ val PREDEFINED_CITIES = listOf(
         saved = true
     ),
     // Minsk
-    CityEntity(
+    LocationEntity(
         id = 59195,
         name = "Минск, Беларусь",
         lat = 53.902334,

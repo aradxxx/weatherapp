@@ -1,16 +1,16 @@
-package com.a65apps.weather.presentation.citysearch
+package com.a65apps.weather.presentation.locationsearch
 
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.a65apps.weather.R
-import com.a65apps.weather.domain.city.City
+import com.a65apps.weather.domain.location.Location
 import com.a65apps.weather.presentation.util.itemCallback
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import kotlinx.android.synthetic.main.item_city.*
+import kotlinx.android.synthetic.main.item_location.*
 
-fun cityItemAdapterDelegate(clickListener: (Int) -> Unit) =
-    adapterDelegateLayoutContainer<City, City>(R.layout.item_city) {
+fun locationAdapterDelegate(clickListener: (Int) -> Unit) =
+    adapterDelegateLayoutContainer<Location, Location>(R.layout.item_location) {
         itemView.setOnClickListener {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
@@ -18,22 +18,22 @@ fun cityItemAdapterDelegate(clickListener: (Int) -> Unit) =
             }
         }
         bind {
-            cityName.text = item.name
+            locationName.text = item.name
             savedIcon.isInvisible = !item.saved
         }
     }
 
-val diffCallback = itemCallback<City>(
+val diffCallback = itemCallback<Location>(
     areItemsTheSame = { oldItem, newItem ->
         oldItem.id == newItem.id
     }
 )
 
-class CitiesAdapter(clickListener: (Int) -> Unit) :
-    AsyncListDifferDelegationAdapter<City>(diffCallback) {
+class LocationsAdapter(clickListener: (Int) -> Unit) :
+    AsyncListDifferDelegationAdapter<Location>(diffCallback) {
     init {
         delegatesManager.addDelegate(
-            cityItemAdapterDelegate(clickListener)
+            locationAdapterDelegate(clickListener)
         )
     }
 }

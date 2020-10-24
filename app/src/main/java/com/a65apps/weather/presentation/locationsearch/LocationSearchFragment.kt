@@ -1,4 +1,4 @@
-package com.a65apps.weather.presentation.citysearch
+package com.a65apps.weather.presentation.locationsearch
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.a65apps.weather.R
-import com.a65apps.weather.databinding.FragmentCitySearchBinding
+import com.a65apps.weather.databinding.FragmentLocationSearchBinding
 import com.a65apps.weather.presentation.core.BaseFragment
 import com.a65apps.weather.presentation.util.viewBinding
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,29 +18,29 @@ import kotlinx.coroutines.flow.debounce
 
 private const val FILTER_DEBOUNCE = 250L
 
-class CitySearchFragment : BaseFragment<CitySearchViewModel, CitySearchState>(
-    R.layout.fragment_city_search
+class LocationSearchFragment : BaseFragment<LocationSearchViewModel, LocationSearchState>(
+    R.layout.fragment_location_search
 ) {
     companion object {
-        fun newInstance() = CitySearchFragment()
+        fun newInstance() = LocationSearchFragment()
     }
 
-    private val binding by viewBinding(FragmentCitySearchBinding::bind)
+    private val binding by viewBinding(FragmentLocationSearchBinding::bind)
     private val filter = MutableStateFlow("")
-    private val citiesAdapter by lazy {
-        CitiesAdapter { position ->
-            viewModel.cityClicked(position)
+    private val locationsAdapter by lazy {
+        LocationsAdapter { position ->
+            viewModel.locationClicked(position)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.citiesRv) {
+        with(binding.locationsRv) {
             layoutManager = LinearLayoutManager(context).apply { recycleChildrenOnDetach = true }
-            adapter = citiesAdapter
+            adapter = locationsAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         }
-        binding.cityName.doAfterTextChanged {
+        binding.locationName.doAfterTextChanged {
             filter.value = it.toString()
         }
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -49,11 +49,11 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel, CitySearchState>(
         }
     }
 
-    override fun updateState(state: CitySearchState) {
+    override fun updateState(state: LocationSearchState) {
         super.updateState(state)
-        citiesAdapter.items = state.cities
+        locationsAdapter.items = state.locations
         binding.progressBarLine.isVisible = state.progressVisible
     }
 
-    override val vmClass = CitySearchViewModel::class.java
+    override val vmClass = LocationSearchViewModel::class.java
 }

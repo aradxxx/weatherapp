@@ -1,10 +1,10 @@
-package com.a65apps.weather.data.city
+package com.a65apps.weather.data.location
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "city")
-data class CityEntity(
+@Entity(tableName = "location")
+data class LocationEntity(
     @PrimaryKey
     val id: Long,
     val name: String,

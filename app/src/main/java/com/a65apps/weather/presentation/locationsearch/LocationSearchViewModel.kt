@@ -1,6 +1,6 @@
-package com.a65apps.weather.presentation.citysearch
+package com.a65apps.weather.presentation.locationsearch
 
-import com.a65apps.weather.domain.city.CityInteractor
+import com.a65apps.weather.domain.location.LocationInteractor
 import com.a65apps.weather.presentation.core.BaseViewModel
 import com.a65apps.weather.presentation.core.navigation.AppRouter
 import kotlinx.coroutines.Dispatchers
@@ -9,27 +9,27 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CitySearchViewModel @Inject constructor(
-    private val cityInteractor: CityInteractor,
+class LocationSearchViewModel @Inject constructor(
+    private val locationInteractor: LocationInteractor,
     router: AppRouter
-) : BaseViewModel<CitySearchState>(CitySearchState(emptyList(), false), router) {
+) : BaseViewModel<LocationSearchState>(LocationSearchState(emptyList(), false), router) {
     init {
-        subscribeCities()
+        subscribeLocations()
     }
 
-    private fun subscribeCities() = vmScope.launch {
-        cityInteractor.subsribeCities()
+    private fun subscribeLocations() = vmScope.launch {
+        locationInteractor.subsribeLocations()
             .flowOn(Dispatchers.IO)
-            .collect { cities ->
+            .collect { locations ->
                 updateState {
-                    it.copy(cities = cities)
+                    it.copy(locations = locations)
                 }
             }
     }
 
-    fun cityClicked(position: Int) = vmScope.launch {
-        val city = state.cities.getOrNull(position) ?: return@launch
-        cityInteractor.citySelected(city)
+    fun locationClicked(position: Int) = vmScope.launch {
+        val location = state.locations.getOrNull(position) ?: return@launch
+        locationInteractor.locationSelected(location)
     }
 
     fun filterChanged(filter: String) {
@@ -42,7 +42,7 @@ class CitySearchViewModel @Inject constructor(
             it.copy(progressVisible = true)
         }
         try {
-            cityInteractor.searchCities(filter)
+            locationInteractor.searchLocation(filter)
         } finally {
             updateState {
                 it.copy(progressVisible = false)
@@ -51,6 +51,6 @@ class CitySearchViewModel @Inject constructor(
     }
 
     private fun updateFilter(filter: String) = vmScope.launch {
-        cityInteractor.filter(filter)
+        locationInteractor.filter(filter)
     }
 }

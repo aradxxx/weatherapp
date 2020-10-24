@@ -1,9 +1,11 @@
 package com.a65apps.weather.di
 
-import com.a65apps.weather.di.citysearch.CitySearchFragmentModule
-import com.a65apps.weather.presentation.citysearch.CitySearchFragment
+import com.a65apps.weather.di.locationsearch.LocationSearchFragmentModule
+import com.a65apps.weather.di.settings.SettingsFragmentModule
 import com.a65apps.weather.presentation.core.navigation.tab.TabFragment
 import com.a65apps.weather.presentation.core.navigation.tab.TabsContainerFragment
+import com.a65apps.weather.presentation.locationsearch.LocationSearchFragment
+import com.a65apps.weather.presentation.settings.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,6 +17,9 @@ interface FragmentBindingModule {
     @ContributesAndroidInjector
     fun bindTabFragment(): TabFragment
 
-    @ContributesAndroidInjector(modules = [CitySearchFragmentModule::class])
-    fun bindCitySearchFragment(): CitySearchFragment
+    @ContributesAndroidInjector(modules = [SettingsFragmentModule::class])
+    fun bindSettingsFragment(): SettingsFragment
+
+    @ContributesAndroidInjector(modules = [LocationSearchFragmentModule::class])
+    fun bindLocationSearchFragment(): LocationSearchFragment
 }

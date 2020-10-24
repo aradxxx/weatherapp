@@ -17,6 +17,6 @@ class MainViewModel @Inject constructor(
     init {
         router.newRootScreen(Screens.TabsContainer)
         router.switchTab(Tab.General)
-        router.newRootScreen(Tab.Settings, Screens.CitySearch)
+        router.newRootScreen(Tab.Settings, Screens.Settings)
     }
 }

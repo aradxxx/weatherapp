@@ -4,8 +4,8 @@ package com.a65apps.weather.di.app
 
 import android.content.Context
 import com.a65apps.weather.BuildConfig
-import com.a65apps.weather.data.core.network.CityApi
 import com.a65apps.weather.data.core.network.ConnectionInterceptor
+import com.a65apps.weather.data.core.network.LocationApi
 import com.a65apps.weather.data.core.network.connectionprovider.AndroidConnectionProvider
 import com.a65apps.weather.data.core.network.connectionprovider.ConnectionProvider
 import dagger.Module
@@ -69,11 +69,11 @@ class NetworkModule {
     fun provideApi(
         @Named("geo") okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory
-    ): CityApi =
+    ): LocationApi =
         Retrofit.Builder()
             .baseUrl(BuildConfig.GEOCODING_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()
-            .create(CityApi::class.java)
+            .create(LocationApi::class.java)
 }

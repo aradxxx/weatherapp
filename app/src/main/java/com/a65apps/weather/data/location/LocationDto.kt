@@ -1,10 +1,10 @@
-package com.a65apps.weather.data.city
+package com.a65apps.weather.data.location
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CityDto(
+data class LocationDto(
     @Json(name = "osm_id")
     val id: Long,
     @Json(name = "display_name")
