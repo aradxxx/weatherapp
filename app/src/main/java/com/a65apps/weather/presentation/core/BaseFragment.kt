@@ -7,15 +7,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.a65apps.weather.di.core.AndroidXInjection
 import com.a65apps.weather.di.core.ViewModelFactory
 import com.a65apps.weather.presentation.util.Const
 import com.a65apps.weather.presentation.util.toast
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,10 +20,7 @@ private const val BUNDLE_VIEW_STATE = "VIEW_STATE"
 @SuppressWarnings("TooManyFunctions")
 abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
     layoutRes: Int
-) : Fragment(layoutRes), HasAndroidInjector {
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
+) : Fragment(layoutRes) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val backPressedDispatcher: OnBackPressedCallback =
@@ -49,13 +42,15 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
     protected open fun onEvent(event: Event) {
         when (event) {
             is MessageEvent -> {
-                requireContext().toast(event.message)
+                if (event.message.isNotEmpty()) {
+                    requireContext().toast(event.message)
+                }
             }
         }
     }
 
     override fun onAttach(context: Context) {
-        AndroidXInjection.inject(this)
+        AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
@@ -77,25 +72,19 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.apply {
-            stateLiveData().observe(
-                viewLifecycleOwner,
-                {
-                    Timber.d("new state: %s", it.toString())
-                    updateState(it)
-                }
-            )
-            eventLiveData().observe(viewLifecycleOwner, Observer { onEvent(it) })
-        }
+        viewModel.stateLiveData().observe(
+            viewLifecycleOwner,
+            {
+                Timber.d("new state: %s", it.toString())
+                updateState(it)
+            }
+        )
+        viewModel.eventLiveData().observe(viewLifecycleOwner, { onEvent(it) })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(BUNDLE_VIEW_STATE, viewModel.stateLiveData().value)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
     }
 
     fun <A : Parcelable> initialArguments(): A {

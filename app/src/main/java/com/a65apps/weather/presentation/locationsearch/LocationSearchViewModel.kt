@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LocationSearchViewModel @Inject constructor(
-    private val locationInteractor: LocationInteractor,
-    router: AppRouter
+    router: AppRouter,
+    private val locationInteractor: LocationInteractor
 ) : BaseViewModel<LocationSearchState>(LocationSearchState(emptyList(), false), router) {
     private var searchJob: Job? = null
 

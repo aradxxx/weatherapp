@@ -5,11 +5,11 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.a65apps.weather.R
 import com.a65apps.weather.databinding.FragmentTabsContainerBinding
-import com.a65apps.weather.di.core.AndroidXInjection
 import com.a65apps.weather.presentation.core.navigation.AppRouter
 import com.a65apps.weather.presentation.util.tabNavigator
 import com.a65apps.weather.presentation.util.viewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.android.support.AndroidSupportInjection
 import ru.aradxxx.ciceronetabs.TabCicerone
 import ru.aradxxx.ciceronetabs.TabNavigator
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class TabsContainerFragment :
     }
 
     override fun onAttach(context: Context) {
-        AndroidXInjection.inject(this)
+        AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 

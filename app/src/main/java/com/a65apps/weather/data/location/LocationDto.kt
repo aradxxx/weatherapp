@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class LocationDto(
-    @Json(name = "osm_id")
+    @Json(name = "place_id")
     val id: Long,
     @Json(name = "display_name")
     val name: String,

@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
@@ -19,12 +18,7 @@ class LocationRepositoryImpl @Inject constructor(
     private val appDb: AppDb
 ) : LocationRepository {
     override suspend fun updateLocations(name: String) = withContext(Dispatchers.IO) {
-        val response = locationApi.search(name).execute()
-        val locations = if (response.isSuccessful) {
-            response.body()
-        } else {
-            throw IOException(response.message())
-        } ?: emptyList()
+        val locations = locationApi.search(name)
         val locationEntities = locationDtoMapper.map(locations)
         appDb.locationDao().insertLocations(locationEntities)
         return@withContext

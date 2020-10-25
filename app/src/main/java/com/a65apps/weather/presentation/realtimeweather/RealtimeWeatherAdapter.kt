@@ -3,14 +3,16 @@ package com.a65apps.weather.presentation.realtimeweather
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.a65apps.weather.R
+import com.a65apps.weather.databinding.ItemRealtimeWeatherBinding
+import com.a65apps.weather.presentation.util.isDay
 import com.a65apps.weather.presentation.util.itemCallback
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import kotlinx.android.synthetic.main.item_location.locationName
-import kotlinx.android.synthetic.main.item_realtime_weather.*
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
 fun realtimeWeatherAdapterDelegate(clickListener: (Int) -> Unit) =
-    adapterDelegateLayoutContainer<RealtimeWeatherItem, RealtimeWeatherItem>(R.layout.item_realtime_weather) {
+    adapterDelegateViewBinding<RealtimeWeatherItem, RealtimeWeatherItem, ItemRealtimeWeatherBinding>(
+        { layoutInflater, root -> ItemRealtimeWeatherBinding.inflate(layoutInflater, root, false) }
+    ) {
         itemView.setOnClickListener {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
@@ -18,9 +20,9 @@ fun realtimeWeatherAdapterDelegate(clickListener: (Int) -> Unit) =
             }
         }
         bind {
-            locationName.text = item.location.name
+            binding.locationName.text = item.location.name
             val temp = item.weather?.temperature
-            temperature.text = when {
+            binding.temperature.text = when {
                 temp == null -> {
                     getString(R.string.no_data)
                 }
@@ -33,15 +35,16 @@ fun realtimeWeatherAdapterDelegate(clickListener: (Int) -> Unit) =
             }
             val weatherCode = item.weather?.weatherCode
             if (weatherCode != null) {
-                val weatherStateRes = getWeatherStateIcon(weatherCode, System.currentTimeMillis())
+                val weatherStateRes =
+                    getWeatherStateIcon(weatherCode, System.currentTimeMillis().isDay())
                 if (weatherStateRes != null) {
-                    weatherState.setImageResource(weatherStateRes)
-                    weatherState.isInvisible = false
+                    binding.weatherState.setImageResource(weatherStateRes)
+                    binding.weatherState.isInvisible = false
                 } else {
-                    weatherState.isInvisible = true
+                    binding.weatherState.isInvisible = true
                 }
             } else {
-                weatherState.isInvisible = true
+                binding.weatherState.isInvisible = true
             }
         }
     }

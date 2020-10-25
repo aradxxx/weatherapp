@@ -2,10 +2,9 @@ package com.a65apps.weather.presentation.core
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.a65apps.weather.di.core.AndroidXInjection
 import com.a65apps.weather.di.core.ViewModelFactory
+import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -37,19 +36,17 @@ abstract class BaseActivity<VM : BaseViewModel<S>, S : State>(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         restoredState = savedInstanceState?.getParcelable(BUNDLE_VIEW_STATE)
-        AndroidXInjection.inject(this)
         super.onCreate(savedInstanceState)
-        viewModel.apply {
-            stateLiveData().observe(
-                this@BaseActivity,
-                Observer {
-                    Timber.d("new activity state: %s", it.toString())
-                    updateState(it)
-                }
-            )
-            eventLiveData().observe(this@BaseActivity, Observer { onEvent(it) })
-        }
+        viewModel.stateLiveData().observe(
+            this@BaseActivity,
+            {
+                Timber.d("new activity state: %s", it.toString())
+                updateState(it)
+            }
+        )
+        viewModel.eventLiveData().observe(this@BaseActivity, { onEvent(it) })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

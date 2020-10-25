@@ -16,4 +16,18 @@ interface WeatherDao {
 
     @Query("SELECT * FROM realtime_weather WHERE locationId == :locationId")
     fun subscribeRealtimeWeather(locationId: Long): Flow<List<RealtimeWeatherEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertForecast(forecast: List<ForecastEntity>)
+
+    @Query("DELETE FROM forecast WHERE locationId == :locationId AND receiptTime < :date")
+    fun deleteLocationForecastOldestThan(locationId: Long, date: Long)
+
+    @Suppress("MaxLineLength")
+    @Query("SELECT * FROM forecast WHERE locationId == :locationId AND date >= :startTime AND date <= :endTime ORDER BY date ASC")
+    fun subscribeForecast(
+        locationId: Long,
+        startTime: Long,
+        endTime: Long
+    ): Flow<List<ForecastEntity>>
 }

@@ -9,7 +9,7 @@ fun <T> itemCallback(
         oldItem == newItem
     },
     getChangePayload: (oldItem: T, newItem: T) -> Any? = { _, _ ->
-        null
+        Unit
     }
 ) = object : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
