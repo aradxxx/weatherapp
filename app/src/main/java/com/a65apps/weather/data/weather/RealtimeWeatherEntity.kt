@@ -9,6 +9,7 @@ data class RealtimeWeatherEntity(
     val locationId: Long,
     val observationTime: Long,
     val temperature: Float,
+    val feelsLike: Float,
     val humidity: Float,
     val weatherCode: String
 )

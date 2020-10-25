@@ -1,6 +1,7 @@
 package com.a65apps.weather.presentation.realtimeweather
 
 import androidx.core.view.isInvisible
+import androidx.recyclerview.widget.RecyclerView
 import com.a65apps.weather.R
 import com.a65apps.weather.presentation.util.itemCallback
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
@@ -8,15 +9,27 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import kotlinx.android.synthetic.main.item_location.locationName
 import kotlinx.android.synthetic.main.item_realtime_weather.*
 
-fun realtimeWeatherAdapterDelegate() =
+fun realtimeWeatherAdapterDelegate(clickListener: (Int) -> Unit) =
     adapterDelegateLayoutContainer<RealtimeWeatherItem, RealtimeWeatherItem>(R.layout.item_realtime_weather) {
+        itemView.setOnClickListener {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                clickListener(position)
+            }
+        }
         bind {
             locationName.text = item.location.name
             val temp = item.weather?.temperature
-            temperature.text = if (temp != null) {
-                getString(R.string.temperature_celsius, temp)
-            } else {
-                getString(R.string.no_data)
+            temperature.text = when {
+                temp == null -> {
+                    getString(R.string.no_data)
+                }
+                temp <= 0F -> {
+                    getString(R.string.temperature_celsius, temp)
+                }
+                else -> {
+                    getString(R.string.temperature_celsius_positive, temp)
+                }
             }
             val weatherCode = item.weather?.weatherCode
             if (weatherCode != null) {
@@ -39,11 +52,11 @@ val diffCallback = itemCallback<RealtimeWeatherItem>(
     }
 )
 
-class RealtimeWeatherAdapter :
+class RealtimeWeatherAdapter(clickListener: (Int) -> Unit) :
     AsyncListDifferDelegationAdapter<RealtimeWeatherItem>(diffCallback) {
     init {
         delegatesManager.addDelegate(
-            realtimeWeatherAdapterDelegate()
+            realtimeWeatherAdapterDelegate(clickListener)
         )
     }
 }

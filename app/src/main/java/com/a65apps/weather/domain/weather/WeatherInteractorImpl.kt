@@ -15,4 +15,8 @@ class WeatherInteractorImpl @Inject constructor(
     override fun subscribeRealtimeWeather(): Flow<List<RealtimeWeather>> {
         return weatherRepository.subscribeRealtimeWeather()
     }
+
+    override fun subscribeRealtimeWeather(location: Location): Flow<RealtimeWeather> {
+        return weatherRepository.subscribeRealtimeWeather(location)
+    }
 }

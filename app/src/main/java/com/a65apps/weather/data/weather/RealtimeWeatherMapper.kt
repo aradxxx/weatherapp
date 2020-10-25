@@ -9,6 +9,7 @@ object RealtimeWeatherDtoMapper : Mapper<RealtimeWeatherDto, RealtimeWeatherEnti
             -1L,
             from.observationTimeDto.date.time,
             from.temperature.value,
+            from.feelsLike.value,
             from.humidity.value,
             from.weatherCodeDto.code
         )
@@ -21,6 +22,7 @@ object RealtimeWeatherEntityMapper : Mapper<RealtimeWeatherEntity, RealtimeWeath
             from.locationId,
             from.observationTime,
             from.temperature,
+            from.feelsLike,
             from.humidity,
             from.weatherCode
         )

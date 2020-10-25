@@ -13,4 +13,7 @@ interface WeatherDao {
 
     @Query("SELECT * FROM realtime_weather")
     fun subscribeRealtimeWeather(): Flow<List<RealtimeWeatherEntity>>
+
+    @Query("SELECT * FROM realtime_weather WHERE locationId == :locationId")
+    fun subscribeRealtimeWeather(locationId: Long): Flow<List<RealtimeWeatherEntity>>
 }

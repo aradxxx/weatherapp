@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface WeatherInteractor {
     suspend fun updateRealtimeWeather(location: Location)
     fun subscribeRealtimeWeather(): Flow<List<RealtimeWeather>>
+    fun subscribeRealtimeWeather(location: Location): Flow<RealtimeWeather>
 }

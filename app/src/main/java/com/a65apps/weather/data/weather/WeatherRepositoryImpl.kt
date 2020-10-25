@@ -7,6 +7,7 @@ import com.a65apps.weather.domain.location.Location
 import com.a65apps.weather.domain.weather.RealtimeWeather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -51,6 +52,17 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override fun subscribeRealtimeWeather(): Flow<List<RealtimeWeather>> {
         return appDb.weatherDao().subscribeRealtimeWeather()
+            .map {
+                realtimeWeatherEntityMapper.map(it)
+            }
+    }
+
+    override fun subscribeRealtimeWeather(location: Location): Flow<RealtimeWeather> {
+        return appDb.weatherDao().subscribeRealtimeWeather(location.id)
+            .map {
+                it.firstOrNull()
+            }
+            .filterNotNull()
             .map {
                 realtimeWeatherEntityMapper.map(it)
             }

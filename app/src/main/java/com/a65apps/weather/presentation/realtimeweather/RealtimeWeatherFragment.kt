@@ -17,7 +17,9 @@ class RealtimeWeatherFragment : BaseFragment<RealtimeWeatherViewModel, RealtimeW
     private val binding by viewBinding(FragmentRealtimeWeatherBinding::bind)
     override val vmClass: Class<RealtimeWeatherViewModel> = RealtimeWeatherViewModel::class.java
     private val realtimeWeatherAdapter by lazy {
-        RealtimeWeatherAdapter()
+        RealtimeWeatherAdapter() {
+            viewModel.realtimeWeatherClicked(it)
+        }
     }
 
     companion object {
@@ -43,30 +45,30 @@ class RealtimeWeatherFragment : BaseFragment<RealtimeWeatherViewModel, RealtimeW
         super.updateState(state)
         when (state) {
             is RealtimeWeatherState.Init -> {
-                renderInit()
+                renderInitState()
             }
             is RealtimeWeatherState.LocationWeather -> {
-                renderWeather(state)
+                renderWeatherState(state)
             }
             is RealtimeWeatherState.NoLocation -> {
-                renderNoLocation()
+                renderNoLocationState()
             }
         }
     }
 
-    private fun renderWeather(state: RealtimeWeatherState.LocationWeather) {
+    private fun renderWeatherState(state: RealtimeWeatherState.LocationWeather) {
         binding.weather.isVisible = true
         binding.weather.isRefreshing = false
         binding.noLocation.isVisible = false
         realtimeWeatherAdapter.items = state.realtimeWeather
     }
 
-    private fun renderNoLocation() {
+    private fun renderNoLocationState() {
         binding.weather.isVisible = false
         binding.noLocation.isVisible = true
     }
 
-    private fun renderInit() {
+    private fun renderInitState() {
         binding.noLocation.isVisible = false
         binding.weather.isVisible = false
     }

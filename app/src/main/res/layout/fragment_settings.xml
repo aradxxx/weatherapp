@@ -20,18 +20,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/locations"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/TextButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
         android:gravity="start|center_vertical"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/locations"
-        android:textAllCaps="false"
-        android:textAppearance="@style/Body"
-        app:cornerRadius="0dp"
-        app:rippleColor="@color/colorAccentRipple" />
+        android:text="@string/locations" />
 </LinearLayout>
