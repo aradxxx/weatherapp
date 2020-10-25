@@ -7,7 +7,7 @@ val PREDEFINED_LOCATIONS = listOf(
         name = "Москва, Центральный административный округ, Центральный федеральный округ, Россия",
         lat = 55.7504461,
         lon = 37.6174943,
-        savedTimestamp = System.currentTimeMillis() - 1
+        savedTimestamp = System.currentTimeMillis()
     ),
     // Minsk
     LocationEntity(
@@ -15,6 +15,6 @@ val PREDEFINED_LOCATIONS = listOf(
         name = "Минск, Беларусь",
         lat = 53.902334,
         lon = 27.5618791,
-        savedTimestamp = System.currentTimeMillis()
+        savedTimestamp = System.currentTimeMillis() - 1
     )
 )

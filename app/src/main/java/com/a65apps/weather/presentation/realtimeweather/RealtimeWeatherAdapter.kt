@@ -3,6 +3,7 @@ package com.a65apps.weather.presentation.realtimeweather
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.a65apps.weather.R
+import com.a65apps.weather.presentation.util.isDay
 import com.a65apps.weather.presentation.util.itemCallback
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
@@ -33,7 +34,8 @@ fun realtimeWeatherAdapterDelegate(clickListener: (Int) -> Unit) =
             }
             val weatherCode = item.weather?.weatherCode
             if (weatherCode != null) {
-                val weatherStateRes = getWeatherStateIcon(weatherCode, System.currentTimeMillis())
+                val weatherStateRes =
+                    getWeatherStateIcon(weatherCode, System.currentTimeMillis().isDay())
                 if (weatherStateRes != null) {
                     weatherState.setImageResource(weatherStateRes)
                     weatherState.isInvisible = false

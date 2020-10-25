@@ -1,7 +1,6 @@
 package com.a65apps.weather.presentation.realtimeweather
 
 import com.a65apps.weather.R
-import com.a65apps.weather.presentation.util.isDay
 
 const val RAIN_HEAVY = "rain_heavy"
 const val RAIN = "rain"
@@ -28,7 +27,7 @@ const val MOSTLY_CLEAR = "mostly_clear"
 const val CLEAR = "clear"
 
 @Suppress("LongMethod", "ComplexMethod")
-fun getWeatherStateIcon(code: String, timestamp: Long): Int? {
+fun getWeatherStateIcon(code: String, day: Boolean = true): Int? {
     return when (code) {
         RAIN_HEAVY -> {
             R.drawable.ic_weather_rain_heavy
@@ -91,21 +90,21 @@ fun getWeatherStateIcon(code: String, timestamp: Long): Int? {
             R.drawable.ic_weather_mostly_cloudy
         }
         PARTLY_CLOUDY -> {
-            if (timestamp.isDay()) {
+            if (day) {
                 R.drawable.ic_weather_partly_cloudy_day
             } else {
                 R.drawable.ic_weather_partly_cloudy_night
             }
         }
         MOSTLY_CLEAR -> {
-            if (timestamp.isDay()) {
+            if (day) {
                 R.drawable.ic_weather_mostly_clear_day
             } else {
                 R.drawable.ic_weather_mostly_clear_night
             }
         }
         CLEAR -> {
-            if (timestamp.isDay()) {
+            if (day) {
                 R.drawable.ic_weather_clear_day
             } else {
                 R.drawable.ic_weather_clear_night

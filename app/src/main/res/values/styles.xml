@@ -10,6 +10,7 @@
         <item name="android:statusBarColor">@color/text_secondary_light</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="colorControlHighlight">@color/colorAccentRipple</item>
+        <item name="android:navigationBarColor">@color/white</item>
     </style>
 
     <style name="Body">

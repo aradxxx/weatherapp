@@ -8,8 +8,10 @@ import com.a65apps.weather.databinding.FragmentRealtimeDetailsBinding
 import com.a65apps.weather.domain.weather.RealtimeWeather
 import com.a65apps.weather.presentation.core.BaseFragment
 import com.a65apps.weather.presentation.realtimeweather.getWeatherStateIcon
+import com.a65apps.weather.presentation.util.isDay
 import com.a65apps.weather.presentation.util.viewBinding
 import com.a65apps.weather.presentation.util.withInitialArguments
+import kotlin.math.roundToInt
 
 class RealtimeDetailsFragment : BaseFragment<RealtimeDetailsViewModel, RealtimeDetailsState>(
     R.layout.fragment_realtime_details
@@ -56,24 +58,15 @@ class RealtimeDetailsFragment : BaseFragment<RealtimeDetailsViewModel, RealtimeD
         binding.feelsLike.text = getString(R.string.feels_like_celsius, state.weather.feelsLike)
         binding.humidity.text = getString(R.string.humidity_percents, state.weather.humidity)
         renderTemp(state.weather)
-        getWeatherStateIcon(state.weather.weatherCode, System.currentTimeMillis())?.let {
+        getWeatherStateIcon(state.weather.weatherCode, System.currentTimeMillis().isDay())?.let {
             binding.header.weatherCode.setImageResource(it)
         }
     }
 
     private fun renderTemp(weather: RealtimeWeather) {
-        when {
-            weather.temperature <= 0F -> {
-                binding.header.plus.isVisible = false
-                binding.header.temperature.text =
-                    getString(R.string.temperature, weather.temperature)
-            }
-            else -> {
-                binding.header.plus.isVisible = true
-                binding.header.temperature.text =
-                    getString(R.string.temperature, weather.temperature)
-            }
-        }
+        val temperature = weather.temperature.roundToInt()
+        binding.header.temperature.text = temperature.toString()
+        binding.header.plus.isVisible = temperature > 0
     }
 
     private fun renderInitState() {

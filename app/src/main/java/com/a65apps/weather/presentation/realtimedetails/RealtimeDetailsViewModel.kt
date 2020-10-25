@@ -4,6 +4,8 @@ import com.a65apps.weather.domain.location.LocationInteractor
 import com.a65apps.weather.domain.weather.WeatherInteractor
 import com.a65apps.weather.presentation.core.BaseViewModel
 import com.a65apps.weather.presentation.core.navigation.AppRouter
+import com.a65apps.weather.presentation.core.navigation.Screens
+import com.a65apps.weather.presentation.forecast.ForecastParams
 import com.a65apps.weather.presentation.util.nullOr
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -33,12 +35,14 @@ class RealtimeDetailsViewModel @Inject constructor(
         updateLocationWeather()
     }
 
+    @Suppress("MagicNumber")
     fun day3ForecastClicked() {
-        // no op
+        navigateToForecast(3)
     }
 
+    @Suppress("MagicNumber")
     fun day7ForecastClicked() {
-        // no op
+        navigateToForecast(7)
     }
 
     private fun subscribeWeather() = vmScope.launch {
@@ -59,9 +63,18 @@ class RealtimeDetailsViewModel @Inject constructor(
     }
 
     private fun updateLocationWeather() = vmScope.launch {
-        val currentState = state.nullOr<RealtimeDetailsState.WeatherState>() ?: return@launch
-        weatherInteractor.updateRealtimeWeather(currentState.location)
+        updateWeather()
         delay(SWIPE_REFRESH_DELAY)
         updateState { it }
+    }
+
+    private fun updateWeather() = vmScope.launch {
+        val currentState = state.nullOr<RealtimeDetailsState.WeatherState>() ?: return@launch
+        weatherInteractor.updateRealtimeWeather(currentState.location)
+    }
+
+    private fun navigateToForecast(daysOut: Int) {
+        val currentState = state.nullOr<RealtimeDetailsState.WeatherState>() ?: return
+        router.navigateTo(Screens.Forecast(ForecastParams(currentState.location.id, daysOut)))
     }
 }

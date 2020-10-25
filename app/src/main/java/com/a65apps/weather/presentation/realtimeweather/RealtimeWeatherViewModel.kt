@@ -44,7 +44,10 @@ class RealtimeWeatherViewModel @Inject constructor(
 
     fun realtimeWeatherClicked(position: Int) {
         val currentState = state.nullOr<RealtimeWeatherState.LocationWeather>() ?: return
-        val location = currentState.realtimeWeather.getOrNull(position) ?: return
+        val location = currentState.realtimeWeather.getOrNull(position)
+        if (location?.weather == null) {
+            return
+        }
         router.navigateTo(
             Tab.GLOBAL,
             Screens.RealtimeDetails(RealtimeDetailsParams(location.location.id))

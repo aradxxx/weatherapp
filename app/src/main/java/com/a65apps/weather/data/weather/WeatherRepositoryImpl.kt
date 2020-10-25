@@ -4,7 +4,9 @@ import com.a65apps.weather.data.core.AppDb
 import com.a65apps.weather.data.core.network.WeatherApi
 import com.a65apps.weather.di.core.Mapper
 import com.a65apps.weather.domain.location.Location
+import com.a65apps.weather.domain.weather.Forecast
 import com.a65apps.weather.domain.weather.RealtimeWeather
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -12,16 +14,21 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.util.Date
 import javax.inject.Inject
 
-private const val REALTIME_WEATHER_LIFETIME = 300_000
+private const val REALTIME_WEATHER_LIFETIME = 60_000
+private const val FORECAST_WEATHER_LIFETIME = 300_000
 
 class WeatherRepositoryImpl @Inject constructor(
     private val appDb: AppDb,
     private val weatherApi: WeatherApi,
     private val realtimeWeatherDtoMapper: Mapper<RealtimeWeatherDto, RealtimeWeatherEntity>,
-    private val realtimeWeatherEntityMapper: Mapper<RealtimeWeatherEntity, RealtimeWeather>
+    private val realtimeWeatherEntityMapper: Mapper<RealtimeWeatherEntity, RealtimeWeather>,
+    private val forecastDtoMapper: Mapper<ForecastDto, ForecastEntity>,
+    private val forecastEntityMapper: Mapper<ForecastEntity, Forecast>
 ) : WeatherRepository {
+    private val rfc3339Formatter = Rfc3339DateJsonAdapter()
     override suspend fun updateRealtimeWeather(location: Location) = withContext(Dispatchers.IO) {
         val current = appDb.weatherDao().subscribeRealtimeWeather().first()
             .firstOrNull { it.locationId == location.id }
@@ -31,24 +38,6 @@ class WeatherRepositoryImpl @Inject constructor(
             updateRealtimeWeatherFromApi(location)
         }
     }
-
-    private suspend fun updateRealtimeWeatherFromApi(location: Location) =
-        withContext(Dispatchers.IO) {
-            val response = weatherApi.realtime(
-                location.coordinates.lat,
-                location.coordinates.lon
-            ).execute()
-            val realtimeWeather = if (response.isSuccessful) {
-                response.body()
-            } else {
-                throw IOException(response.message())
-            } ?: throw IOException("empty response")
-            appDb.weatherDao().insertRealtimeWeather(
-                realtimeWeatherDtoMapper.map(realtimeWeather).copy(
-                    locationId = location.id
-                )
-            )
-        }
 
     override fun subscribeRealtimeWeather(): Flow<List<RealtimeWeather>> {
         return appDb.weatherDao().subscribeRealtimeWeather()
@@ -67,4 +56,68 @@ class WeatherRepositoryImpl @Inject constructor(
                 realtimeWeatherEntityMapper.map(it)
             }
     }
+
+    override suspend fun updateForecast(location: Location, endTime: Long) =
+        withContext(Dispatchers.IO) {
+            val forecasts =
+                appDb.weatherDao().subscribeForecast(location.id, endTime, endTime)
+                    .first()
+            val forecast = forecasts.firstOrNull()
+            if (forecast == null || System.currentTimeMillis() - forecast.receiptTime >= FORECAST_WEATHER_LIFETIME) {
+                updateForecastFromApi(location, endTime)
+            }
+        }
+
+    override fun subscribeForecast(
+        location: Location,
+        startTime: Long,
+        endTime: Long
+    ): Flow<List<Forecast>> {
+        return appDb.weatherDao().subscribeForecast(location.id, startTime, endTime).map {
+            forecastEntityMapper.map(it)
+        }
+    }
+
+    private suspend fun updateRealtimeWeatherFromApi(location: Location) =
+        withContext(Dispatchers.IO) {
+            val response = weatherApi.realtime(
+                location.coordinates.lat,
+                location.coordinates.lon
+            ).execute()
+            val realtimeWeather = if (response.isSuccessful) {
+                response.body()
+            } else {
+                throw IOException(response.message())
+            } ?: throw IOException("Empty realtime weather response")
+            appDb.weatherDao().insertRealtimeWeather(
+                realtimeWeatherDtoMapper.map(realtimeWeather).copy(
+                    locationId = location.id
+                )
+            )
+        }
+
+    private suspend fun updateForecastFromApi(location: Location, endTime: Long) =
+        withContext(Dispatchers.IO) {
+            val dateString = rfc3339Formatter.toJson(Date(endTime)).replace("\"", "")
+            val response = weatherApi.forecast(
+                location.coordinates.lat,
+                location.coordinates.lon,
+                dateString
+            ).execute()
+            val forecast = if (response.isSuccessful) {
+                response.body()
+            } else {
+                throw IOException(response.message())
+            } ?: throw IOException("Empty forecast response")
+            val now = System.currentTimeMillis()
+            appDb.weatherDao().deleteForecastOldestThan(now)
+            appDb.weatherDao().insertForecast(
+                forecastDtoMapper.map(forecast).map {
+                    it.copy(
+                        locationId = location.id,
+                        receiptTime = now
+                    )
+                }
+            )
+        }
 }

@@ -7,4 +7,6 @@ interface WeatherInteractor {
     suspend fun updateRealtimeWeather(location: Location)
     fun subscribeRealtimeWeather(): Flow<List<RealtimeWeather>>
     fun subscribeRealtimeWeather(location: Location): Flow<RealtimeWeather>
+    suspend fun updateForecast(location: Location, daysOut: Int)
+    fun subscribeForecast(location: Location, daysOut: Int): Flow<List<Forecast>>
 }

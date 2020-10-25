@@ -49,7 +49,9 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
     protected open fun onEvent(event: Event) {
         when (event) {
             is MessageEvent -> {
-                requireContext().toast(event.message)
+                if (event.message.isNotEmpty()) {
+                    requireContext().toast(event.message)
+                }
             }
         }
     }

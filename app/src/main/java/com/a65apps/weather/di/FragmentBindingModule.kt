@@ -1,11 +1,13 @@
 package com.a65apps.weather.di
 
+import com.a65apps.weather.di.forecast.ForecastFragmentModule
 import com.a65apps.weather.di.locationsearch.LocationSearchFragmentModule
 import com.a65apps.weather.di.realtimedetails.RealtimeDetailsFragmentModule
 import com.a65apps.weather.di.realtimeweather.RealtimeWeatherFragmentModule
 import com.a65apps.weather.di.settings.SettingsFragmentModule
 import com.a65apps.weather.presentation.core.navigation.tab.TabFragment
 import com.a65apps.weather.presentation.core.navigation.tab.TabsContainerFragment
+import com.a65apps.weather.presentation.forecast.ForecastFragment
 import com.a65apps.weather.presentation.locationsearch.LocationSearchFragment
 import com.a65apps.weather.presentation.realtimedetails.RealtimeDetailsFragment
 import com.a65apps.weather.presentation.realtimeweather.RealtimeWeatherFragment
@@ -32,4 +34,7 @@ interface FragmentBindingModule {
 
     @ContributesAndroidInjector(modules = [RealtimeDetailsFragmentModule::class])
     fun bindRealtimeDetailsFragment(): RealtimeDetailsFragment
+
+    @ContributesAndroidInjector(modules = [ForecastFragmentModule::class])
+    fun bindForecastFragment(): ForecastFragment
 }
