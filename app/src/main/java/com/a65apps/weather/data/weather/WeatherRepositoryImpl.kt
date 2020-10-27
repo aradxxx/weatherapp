@@ -6,7 +6,6 @@ import com.a65apps.weather.di.core.Mapper
 import com.a65apps.weather.domain.location.Location
 import com.a65apps.weather.domain.weather.Forecast
 import com.a65apps.weather.domain.weather.RealtimeWeather
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -27,7 +26,6 @@ class WeatherRepositoryImpl @Inject constructor(
     private val forecastDtoMapper: Mapper<ForecastDto, ForecastEntity>,
     private val forecastEntityMapper: Mapper<ForecastEntity, Forecast>
 ) : WeatherRepository {
-    private val rfc3339Formatter = Rfc3339DateJsonAdapter()
     override suspend fun updateRealtimeWeather(location: Location) = withContext(Dispatchers.IO) {
         val current = appDb.weatherDao().subscribeRealtimeWeather().first()
             .firstOrNull { it.locationId == location.id }
@@ -92,11 +90,10 @@ class WeatherRepositoryImpl @Inject constructor(
 
     private suspend fun updateForecastFromApi(location: Location, endTime: Long) =
         withContext(Dispatchers.IO) {
-            val dateString = rfc3339Formatter.toJson(Date(endTime)).replace("\"", "")
             val forecastDto = weatherApi.forecast(
                 location.coordinates.lat,
                 location.coordinates.lon,
-                dateString
+                Date(endTime)
             )
             val now = System.currentTimeMillis()
             appDb.weatherDao().deleteLocationForecastOldestThan(location.id, now)
