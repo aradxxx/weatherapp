@@ -5,7 +5,7 @@ import com.squareup.moshi.rawType
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Date
 
 private const val QUOTE = "\""
 

@@ -1,9 +1,8 @@
 package com.a65apps.weather.presentation.realtimedetails
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class RealtimeDetailsParams(
     val locationId: Long
-) : Parcelable
+) : java.io.Serializable

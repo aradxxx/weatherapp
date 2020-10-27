@@ -1,9 +1,8 @@
 package com.a65apps.weather.domain.weather
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class RealtimeWeather(
     val locationId: Long,
     val observationTime: Long,
@@ -11,4 +10,4 @@ data class RealtimeWeather(
     val feelsLike: Float,
     val humidity: Float,
     val weatherCode: String
-) : Parcelable
+) : java.io.Serializable

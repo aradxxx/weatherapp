@@ -1,13 +1,12 @@
 package com.a65apps.weather.domain.location
 
-import android.os.Parcelable
 import com.a65apps.weather.domain.core.LatLon
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class Location(
     val id: Long,
     val name: String,
     val coordinates: LatLon,
     val savedTimestamp: Long?
-) : Parcelable
+) : java.io.Serializable

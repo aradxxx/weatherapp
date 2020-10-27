@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion 30
@@ -56,12 +56,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    androidExtensions {
-        features = ["parcelize"]
-    }
-
-    androidExtensions.experimental = true
-
     buildFeatures.viewBinding = true
 }
 
@@ -108,4 +102,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
 }

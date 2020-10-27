@@ -35,9 +35,10 @@ abstract class BaseActivity<VM : BaseViewModel<S>, S : State>(
         // for implementing
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        restoredState = savedInstanceState?.getParcelable(BUNDLE_VIEW_STATE)
+        restoredState = savedInstanceState?.getSerializable(BUNDLE_VIEW_STATE) as S?
         super.onCreate(savedInstanceState)
         viewModel.stateLiveData().observe(
             this@BaseActivity,
@@ -50,7 +51,7 @@ abstract class BaseActivity<VM : BaseViewModel<S>, S : State>(
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(BUNDLE_VIEW_STATE, viewModel.stateLiveData().value)
+        outState.putSerializable(BUNDLE_VIEW_STATE, viewModel.stateLiveData().value)
         super.onSaveInstanceState(outState)
     }
 

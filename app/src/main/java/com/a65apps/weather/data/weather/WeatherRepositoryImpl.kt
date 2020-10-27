@@ -6,7 +6,6 @@ import com.a65apps.weather.di.core.Mapper
 import com.a65apps.weather.domain.location.Location
 import com.a65apps.weather.domain.weather.Forecast
 import com.a65apps.weather.domain.weather.RealtimeWeather
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull

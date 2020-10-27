@@ -1,7 +1,7 @@
 package com.a65apps.weather.presentation.settings
 
 import com.a65apps.weather.presentation.core.State
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 object SettingsState : State

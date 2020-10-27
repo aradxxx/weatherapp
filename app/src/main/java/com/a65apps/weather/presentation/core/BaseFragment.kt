@@ -2,7 +2,6 @@ package com.a65apps.weather.presentation.core
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
@@ -13,6 +12,7 @@ import com.a65apps.weather.presentation.util.Const
 import com.a65apps.weather.presentation.util.toast
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
+import java.io.Serializable
 import javax.inject.Inject
 
 private const val BUNDLE_VIEW_STATE = "VIEW_STATE"
@@ -54,8 +54,9 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
         super.onAttach(context)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
-        restoredState = savedInstanceState?.getParcelable(BUNDLE_VIEW_STATE)
+        restoredState = savedInstanceState?.getSerializable(BUNDLE_VIEW_STATE) as S?
         super.onCreate(savedInstanceState)
     }
 
@@ -83,12 +84,13 @@ abstract class BaseFragment<VM : BaseViewModel<S>, S : State>(
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(BUNDLE_VIEW_STATE, viewModel.stateLiveData().value)
+        outState.putSerializable(BUNDLE_VIEW_STATE, viewModel.stateLiveData().value)
         super.onSaveInstanceState(outState)
     }
 
-    fun <A : Parcelable> initialArguments(): A {
-        arguments?.getParcelable<A>(Const.BUNDLE_INITIAL_ARGS)?.also { return it }
+    @Suppress("UNCHECKED_CAST")
+    fun <A : Serializable> initialArguments(): A {
+        arguments?.getSerializable(Const.BUNDLE_INITIAL_ARGS)?.also { return it as A }
         throw IllegalArgumentException("Fragment doesn't contain initial args")
     }
 }

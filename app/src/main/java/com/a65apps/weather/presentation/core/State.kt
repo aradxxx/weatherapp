@@ -1,5 +1,5 @@
 package com.a65apps.weather.presentation.core
 
-import android.os.Parcelable
+import java.io.Serializable
 
-interface State : Parcelable
+interface State : Serializable
