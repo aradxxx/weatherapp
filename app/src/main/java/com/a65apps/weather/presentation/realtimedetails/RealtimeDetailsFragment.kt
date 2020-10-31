@@ -55,7 +55,8 @@ class RealtimeDetailsFragment : BaseFragment<RealtimeDetailsViewModel, RealtimeD
         binding.weather.isVisible = true
         binding.weather.isRefreshing = false
         binding.toolbar.title = state.location.name
-        binding.feelsLike.text = getString(R.string.feels_like_celsius, state.weather.feelsLike)
+        binding.feelsLike.text =
+            getString(R.string.feels_like_celsius, state.weather.feelsLike.roundToInt())
         binding.humidity.text = getString(R.string.humidity_percents, state.weather.humidity)
         renderTemp(state.weather)
         getWeatherStateIcon(state.weather.weatherCode, System.currentTimeMillis().isDay())?.let {

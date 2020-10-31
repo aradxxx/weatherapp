@@ -20,7 +20,7 @@
     <string name="day_7_forecast">Прогноз на неделю</string>
     <string name="celsius">\u2103</string>
     <string name="plus">+</string>
-    <string name="feels_like_celsius">Ощущается как %.0f\u2103</string>
+    <string name="feels_like_celsius">Ощущается как %d\u2103</string>
     <string name="humidity_percents">Влажность %.0f%%</string>
 
     <!--Forecast -->
